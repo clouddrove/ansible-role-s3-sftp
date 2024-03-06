@@ -1,0 +1,9 @@
+---
+
+- include_tasks: apt-pkg.yml
+
+- include_tasks: sftp.yml
+
+- include_tasks: user.yml
+
+- include_tasks: s3fs.yml
