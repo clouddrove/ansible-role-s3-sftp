@@ -1,5 +1,5 @@
 ---
-- name: install dependent packages for s3fs-fuse
+- name: Install dependent packages for s3fs-fuse
   package:
     name="{{ item }}"
     state="present"
@@ -16,13 +16,13 @@
     dest: /tmp
     creates: s3fs-fuse-{{ s3fs.version }}
 
-- name: building and installing s3fs-fuse v{{ s3fs.version }}
+- name: Building and installing s3fs-fuse v{{ s3fs.version }}
   command: "{{ item }} chdir=/tmp/s3fs-fuse-{{ s3fs.version }}"
   with_items:
-     - ./autogen.sh
-     - ./configure --prefix={{ s3fs.install_prefix | default('/usr') }}
-     - make
-     - make install
+    - ./autogen.sh
+    - ./configure --prefix={{ s3fs.install_prefix | default('/usr') }}
+    - make
+    - make install
 
 - name: Allow non-root users to specify the allow_other or allow_root mount options
   become: true
@@ -37,15 +37,15 @@
   become: true
   template:
     src: passwd-s3fs.j2
-    dest: "{{ s3fs.passwd_file }}"
+    dest: "/etc/passwd-s3fs"
     mode: 0640
     owner: "{{ ansible_user_id }}"
   with_items: "{{ s3fs.buckets }}"
-  when: item.passwd_file is defined
-  notify: restart s3fs
+  when: item.accessKeyId is defined and item.secretAccessKey is defined
+  notify: S3FS | Restart s3fs
 
 # Mount S3 Bucket to MountPoints
-- name: mount folder to s3 bucket
+- name: Mount folder to s3 bucket
   command: >
     s3fs
     {% for option in item.options %}

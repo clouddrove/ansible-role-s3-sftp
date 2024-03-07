@@ -3,11 +3,10 @@
   service:
     name: "{{ 'ssh' if ansible_os_family == 'Debian' else 'sshd' }}"
     state: restarted
-  ignore_errors: true
 
-- name: restart s3fs
+- name: S3FS | Restart s3fs
   become: true
   service:
     name: s3fs
     state: restarted
-    enabled: yes
+    enabled: true

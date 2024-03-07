@@ -1,5 +1,4 @@
 ---
-
 # Create main group for SFTP users.
 - name: SFTP-Server | Create main sftp user group
   group:

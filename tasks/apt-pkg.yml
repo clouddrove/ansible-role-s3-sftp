@@ -1,18 +1,17 @@
 ---
-
-- name: add git stable apt_repository on Ubuntu
+- name: Add git stable apt_repository on Ubuntu
   apt_repository:
     repo: ppa:git-core/ppa
     state: present
 
-- name: install system packages and utils on ubuntu
+- name: Install system packages and utils on ubuntu
   apt:
     pkg:
       [
         "openssl",
         "groff",
         "telnet",
-        "s3fs", # Tool to mount aws S3 to local storage
+        "s3fs",       # Tool to mount aws S3 to local storage
         "htop",
         "wget",
         "python3-pip",
@@ -24,7 +23,7 @@
     cache_valid_time: 5400
   changed_when: false
 
-- name: install python packages
+- name: Install python packages
   apt:
     name:
       - awscli
