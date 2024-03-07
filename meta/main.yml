@@ -23,7 +23,7 @@ galaxy_info:
         - xenial
         - focal
 
-  galaxy_tags: 
+  galaxy_tags:
     - server
     - cloud
     - amazon
