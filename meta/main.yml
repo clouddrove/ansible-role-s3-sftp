@@ -3,6 +3,8 @@ galaxy_info:
   author: Anmol Nagpal
   description: This ansible role install sftp in the ubuntu and setup users and groups accordingly and mount aws s3 bucket to all users
   company: "CloudDrove Inc."
+  role_name: ansible_role_s3_sftp
+  namespace: "clouddrove"
   license: "license (BSD, MIT)"
 
   min_ansible_version: 2.1
