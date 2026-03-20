@@ -49,9 +49,9 @@
 - name: Mount folder to s3 bucket
   ansible.builtin.command:
     cmd: >
-    s3fs
-    {% for option in item.options %}
-    -o {{ option }}
-    {% endfor %}
-    {{ item.bucket }} {{ item.mountpoints }}
+      s3fs
+      {% for option in item.options %}
+      -o {{ option }}
+      {% endfor %}
+      {{ item.bucket }} {{ item.mountpoints }}
   with_items: "{{ s3fs.buckets }}"
