@@ -3,7 +3,7 @@
 
 # SFTP Group
 sftp_groups:
-  - name: sftpusers
+  - name: Sftpusers
     default_directory_enabled: true
     default_directory_path: /%u
     sftp_allow_passwords: false
@@ -12,9 +12,9 @@ sftp_enable_key_based_auth: true
 
 # Create SFTP Users
 sftp_users:
-  - name: testuser
-    group: sftpusers
-    shell: /sbin/nologin                      # This will prevent ssh login for this User, only SFTP Login will be allowed
+  - name: Testuser
+    ansible.builtin.group: sftpusers
+    ansible.builtin.shell: /sbin/nologin                      # This will prevent ssh login for this User, only SFTP Login will be allowed
     extra_dir: /home/testuser/testuser
     # home: /home/testuser                    # Uncomment this use override default Home Directory for User
     key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCilb6q4n3bnXxFtPkzUCQ6UqF+Gr+Bnjg5e/aF5vv/QRcVf67B6W8xfPZt0fwxRokMDgWF8IWc8U6Kbw2xmMvglz4aHsHjTtMmPkNORtyHZpgOyEQSGzdfpkC7xmU8hcmzHlZ37mribD5oGk5PSovkLR4q4LiEpysG3nm3+P80KIDx82qHmywOYdpPzk0SxHcFK1NwQvb9i292eeQNXnSCqmlsLMF5nhb8YvxfToTnNnYxwh13BPN/VzBNP1E9CT5d6D7p1dACVxwVQk9Z85Y22eqDy/YQaz+my7aKaIqd1djMLVGQIMFGZkEwRS5LiI/2T0mipaQklx/OzJKBOCMt key-pair-name"

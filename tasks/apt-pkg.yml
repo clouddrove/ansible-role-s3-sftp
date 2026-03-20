@@ -1,11 +1,11 @@
 ---
 - name: Add git stable apt_repository on Ubuntu
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: ppa:git-core/ppa
     state: present
 
 - name: Install system packages and utils on ubuntu
-  apt:
+  ansible.builtin.apt:
     pkg:
       [
         "openssl",
@@ -24,7 +24,7 @@
   changed_when: false
 
 - name: Install python packages
-  apt:
+  ansible.builtin.apt:
     name:
       - awscli
       - iotop
