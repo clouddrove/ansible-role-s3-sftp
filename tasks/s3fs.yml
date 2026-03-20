@@ -1,14 +1,17 @@
 ---
 - name: Install dependent packages for s3fs-fuse
   ansible.builtin.package:
-    name="{{ item }}"
-    state="present"
-    update_cache=yes
+    name: "{{ item }}"
+    state: present
+    update_cache: true
   with_items: "{{ s3fs_dependencies }}"
 
 # Download and Setup S3FS
 - name: Download s3fs sources
-  ansible.builtin.get_url: url=https://github.com/s3fs-fuse/s3fs-fuse/archive/v{{ s3fs.version }}.tar.gz dest=/tmp/s3fs-fuse-{{ s3fs.version }}.tar.gz
+  ansible.builtin.get_url:
+    url: "https://github.com/s3fs-fuse/s3fs-fuse/archive/v{{ s3fs.version }}.tar.gz"
+    dest: "/tmp/s3fs-fuse-{{ s3fs.version }}.tar.gz"
+    mode: "0644"
 - name: Extract tar.gz of s3fs-fuse
   ansible.builtin.unarchive:
     src: /tmp/s3fs-fuse-{{ s3fs.version }}.tar.gz
@@ -16,7 +19,7 @@
     dest: /tmp
     creates: s3fs-fuse-{{ s3fs.version }}
 
-- name: Building and installing s3fs-fuse v{{ s3fs.version }}
+- name: Build and install s3fs-fuse
   ansible.builtin.command:
     cmd: "{{ item }} chdir=/tmp/s3fs-fuse-{{ s3fs.version }}"
   with_items:
