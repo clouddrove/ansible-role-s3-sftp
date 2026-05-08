@@ -1,14 +1,12 @@
----
 name: Lint
 
-'on':
+on:
   pull_request:
   push:
     branches:
       - master
 
 jobs:
-
   yamllint:
     name: yamllint
     runs-on: ubuntu-latest
@@ -20,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install yamllint
         run: pip3 install yamllint
@@ -39,7 +37,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
@@ -80,4 +78,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_ANSIBLE }}
         if: always()
-
