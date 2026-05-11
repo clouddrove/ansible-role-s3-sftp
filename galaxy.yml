@@ -1,25 +1,20 @@
 ---
-namespace: clouddrove
-name: ansible_role_s3_sftp
-version: 1.0.0
-readme: README.md
+name: Release to Ansible Galaxy
 
-authors:
-  - CloudDrove
+"on":
+  push:
+    tags:
+      - "*"
 
-description: Ansible role for S3 SFTP setup
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-license:
-  - MIT
-
-tags:
-  - cloud
-  - linux
-  - tools
-
-dependencies: {}
-
-repository: https://github.com/clouddrove/ansible-role-s3-sftp
-issues: https://github.com/clouddrove/ansible-role-s3-sftp/issues
-
-build_ignore: []
+      - name: Publish to Galaxy
+        uses: robertdebock/galaxy-action@1.2.1
+        with:
+          galaxy_api_key: ${{ secrets.galaxy_api_key }}
+          git_branch: master
