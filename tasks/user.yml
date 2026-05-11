@@ -1,24 +1,21 @@
 ---
-
 # Create each SFTP user with home directory on the correct partition, and add to SFTP group.
 - name: SFTP-Server | Create sftp users
   ansible.builtin.user:
     name: "{{ item.name }}"
     group: "{{ item.group | default(sftp_groups.0.name) }}"
-    groups: "{{ (item.groups|default([])) + [sftp_groups.0.name] }}"
-    append: "{{ item.append | default(False) }}"
-    home: "{{ item.home | default('/home' + '/' + item.name) }}"
+    groups: "{{ (item.groups | default([])) + [sftp_groups.0.name] }}"
+    append: "{{ item.append | default(false) }}"
+    home: "{{ item.home | default('/home/' + item.name) }}"
     uid: "{{ item.uid | default(omit) }}"
-    # `None` means default value -> default is to have a shell
-    ansible.builtin.shell:
-      cmd: "{{ None if (item.shell | default(True)) else '/sbin/nologin' }}"
+    shell: "{{ '/bin/bash' if (item.shell | default(true)) else '/sbin/nologin' }}"
     state: present
   with_items: "{{ sftp_users }}"
 
 # A working chrooted SFTP setup requires root:sftgroup ownership of a user's home directory.
 - name: SFTP-Server | Correct ownership and permission of home directories
   ansible.builtin.file:
-    path: "{{ item.home | default('/home' + '/' + item.name) }}"
+    path: "{{ item.home | default('/home/' + item.name) }}"
     owner: root
     group: "{{ sftp_chroot_group | default(sftp_groups.0.name) }}"
     mode: "0750"
@@ -28,11 +25,10 @@
 - name: SFTP-Server | Install public keys
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
-    path: "{{ item.home | default('/home' + '/' + item.name) }}/.ssh/authorized_keys"
+    path: "{{ item.home | default('/home/' + item.name) }}/.ssh/authorized_keys"
     key: "{{ item.key }}"
     manage_dir: true
-  with_items:
-    - "{{ sftp_users }}"
+  with_items: "{{ sftp_users }}"
   when: item.key is defined
 
 # Update user passwords, if they were specified.
@@ -41,7 +37,7 @@
     name: "{{ item.name }}"
     password: "{{ item.password }}"
   with_items: "{{ sftp_users }}"
-  when: item.update_password | default(False)
+  when: item.update_password | default(false)
 
 # Create directories for individual SFTP users. Optional.
 - name: SFTP-Server | Create required directories per user
@@ -51,6 +47,5 @@
     group: "{{ item.group | default(sftp_groups.0.name) }}"
     mode: "{{ item.mode | default('0750') }}"
     state: directory
-  with_items:
-    - "{{ sftp_users }}"
+  with_items: "{{ sftp_users }}"
   when: item.extra_dir is defined
