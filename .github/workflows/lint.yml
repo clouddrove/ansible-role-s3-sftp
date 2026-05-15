@@ -1,5 +1,6 @@
 ---
 name: Lint
+
 on:
   pull_request:
   push:
@@ -7,66 +8,73 @@ on:
       - master
 
 jobs:
-
   yamllint:
     name: yamllint
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out the codebase.
+      - name: Check out the codebase
         uses: actions/checkout@v4
 
-      - name: Set up Python.
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
-      - name: Install yamllist
+      - name: Install yamllint
         run: pip3 install yamllint
 
-      - name: Run yamllint.
+      - name: Run yamllint
         run: yamllint .
 
   ansible-lint:
     name: ansible-lint
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout the codebase.
+      - name: Checkout the codebase
         uses: actions/checkout@v4
 
-      - name: Set up Python.
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
-      - name: Install ansible and other packages
-        run: pip3 install ansible ansible-lint
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
 
-      - name: Run ansible-lint.
+      - name: Install Ansible dependencies
+        run: |
+          pip install ansible-core==2.16.6
+          pip install ansible-lint==24.2.0
+
+      - name: Run ansible-lint
         run: ansible-lint
 
   pre-commit:
-    name: 'Pre-Commit'
+    name: Pre-Commit
     needs:
       - yamllint
       - ansible-lint
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: 'Checkout'
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install ansible-lint
         run: pip3 install ansible-lint
 
-      - name: 'Pre-Commit 🔎'
+      - name: Pre-Commit
         uses: pre-commit/action@v3.0.1
         continue-on-error: true
 
-      - name: 'Slack Notification'
+      - name: Slack Notification
         uses: clouddrove/action-slack@v2
         with:
           status: ${{ job.status }}
-          fields: repo,author
-          author_name: 'CloudDrove Inc.'
+          author_name: "CloudDrove Inc."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_ANSIBLE }}

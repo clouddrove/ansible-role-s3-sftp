@@ -1,0 +1,27 @@
+---
+namespace: clouddrove
+name: ansible_role_s3_sftp
+version: 1.0.0
+
+readme: README.md
+
+authors:
+  - CloudDrove
+
+description: Ansible role for S3 SFTP setup
+
+license:
+  - MIT
+
+tags:
+  - cloud
+  - linux
+  - tools
+
+dependencies: {}
+
+repository: https://github.com/clouddrove/ansible-role-s3-sftp
+
+issues: https://github.com/clouddrove/ansible-role-s3-sftp/issues
+
+build_ignore: []
